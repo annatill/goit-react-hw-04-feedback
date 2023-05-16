@@ -1,33 +1,36 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Feedback } from '../Feedback/Feedback';
 import { Container } from '../App/App.styled';
 
-export class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+export const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const onLeaveFeedback = feedback => {
+    switch (feedback) {
+      case 'good':
+        setGood(prevState => prevState + 1);
+        break;
+      case 'neutral':
+        setNeutral(prevState => prevState + 1);
+        break;
+      case 'bad':
+        setBad(prevState => prevState + 1);
+        break;
+      default:
+        return;
+    }
   };
 
-  onLeaveFeedback(feedback) {
-    this.setState(prevState => {
-      return {
-        [feedback]: prevState[feedback] + 1,
-      };
-    });
-  }
-
-  render() {
-    const { good, neutral, bad } = this.state;
-    return (
-      <Container>
-        <Feedback
-          good={good}
-          neutral={neutral}
-          bad={bad}
-          onLeaveFeedback={feedback => this.onLeaveFeedback(feedback)}
-        ></Feedback>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <Feedback
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        onLeaveFeedback={feedback => onLeaveFeedback(feedback)}
+      ></Feedback>
+    </Container>
+  );
+};
